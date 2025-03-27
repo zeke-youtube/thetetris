@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        input {
+            display: block;
+            width: 90%;
+            padding: 10px;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .toggle-btn {
+            background-color: #007bff;
+        }
+        .toggle-btn:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 id="form-title">Login</h2>
+    <p class="error" id="error-message"></p>
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button id="action-btn">Login</button>
+    <button class="toggle-btn" id="toggle-btn">Go to Signup</button>
+</div>
+
+<script>
+    let isLogin = true; // Track whether we are in login or signup mode
+
+    document.getElementById("toggle-btn").addEventListener("click", function() {
+        isLogin = !isLogin;
+        document.getElementById("form-title").textContent = isLogin ? "Login" : "Signup";
+        document.getElementById("action-btn").textContent = isLogin ? "Login" : "Signup";
+        document.getElementById("toggle-btn").textContent = isLogin ? "Go to Signup" : "Go to Login";
+        document.getElementById("error-message").textContent = "";
+    });
+
+    document.getElementById("action-btn").addEventListener("click", function() {
+        let username = document.getElementById("username").value;
+        let password = document.getElementById("password").value;
+        let errorMessage = document.getElementById("error-message");
+
+        if (username.trim() === "" || password.trim() === "") {
+            errorMessage.textContent = "Username and password cannot be empty!";
+            return;
+        }
+
+        if (isLogin) {
+            // Login logic
+            let storedUsername = localStorage.getItem("username");
+            let storedPassword = localStorage.getItem("password");
+
+            if (username === storedUsername && password === storedPassword) {
+                window.location.href = "https://zeke-youtube.github.io/thetetris/game";
+            } else {
+                errorMessage.textContent = "Invalid username or password!";
+            }
+        } else {
+            // Signup logic
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
+            alert("Signup successful! Now log in.");
+            isLogin = true;
+            document.getElementById("form-title").textContent = "Login";
+            document.getElementById("action-btn").textContent = "Login";
+            document.getElementById("toggle-btn").textContent = "Go to Signup";
+            errorMessage.textContent = "";
+        }
+    });
+</script>
+
+</body>
+</html>
